@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import NavBar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import Home from './pages/Home';
+import Customers from './pages/Customers';
 
 function App() {
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleTheme = () => setDarkMode(!darkMode);
+
+  const bgClass = darkMode ? 'bg-dark text-white' : 'bg-light text-dark';
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={`min-vh-100 ${bgClass}`}>
+      <Router>
+        <NavBar toggleTheme={toggleTheme} darkMode={darkMode} />
+        <div className="d-flex">
+          <Sidebar darkMode={darkMode} />
+          <main className="flex-grow-1 p-4">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/customers" element={<Customers />} />
+            </Routes>
+          </main>
+        </div>
+      </Router>
     </div>
   );
 }
